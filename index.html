@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LA County Voter Guide 2026</title>
+<style>
+/* ── DESIGN TOKENS ─────────────────────────────────────────── */
+:root {
+  --bg:        #0f1318;
+  --surface:   #161c24;
+  --surface2:  #1d2733;
+  --border:    #2a3545;
+  --text:      #d4dde8;
+  --muted:     #6b7a8e;
+  --accent:    #4a9eff;
+  --accent2:   #2d7dd2;
+  --green:     #2ecc8a;
+  --green-bg:  #0d2a1e;
+  --red:       #e5484d;
+  --red-bg:    #2a0d0e;
+  --amber:     #f5a623;
+  --amber-bg:  #2a1f08;
+  --radius:    10px;
+  --radius-sm: 6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── LAYOUT ────────────────────────────────────────────────── */
+.container { max-width: 780px; margin: 0 auto; padding: 0 20px; }
+
+/* ── SCREEN SYSTEM ─────────────────────────────────────────── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HEADER / BRAND ────────────────────────────────────────── */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.brand span { color: var(--accent); }
+.header-badge {
+  font-size: 11px;
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 20px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+/* ── CARDS ─────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.card-sm {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+/* ── TYPOGRAPHY ────────────────────────────────────────────── */
+h1 { font-size: 28px; font-weight: 800; line-height: 1.2; color: var(--text); }
+h2 { font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+p { color: var(--text); margin-bottom: 12px; }
+p:last-child { margin-bottom: 0; }
+.muted { color: var(--muted); font-size: 14px; }
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* ── BUTTONS ───────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  text-decoration: none;
+}
+.btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-green  { background: var(--green); color: #0a1a10; }
+.btn-ghost  { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-block { width: 100%; justify-content: center; }
+
+/* ── PRIVACY NOTICE ────────────────────────────────────────── */
+.privacy-bar {
+  background: var(--green-bg);
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.privacy-bar .icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.privacy-bar p { color: #7de0b5; font-size: 14px; margin: 0; }
+
+/* ── PROGRESS BAR ──────────────────────────────────────────── */
+.progress-wrap { margin-bottom: 24px; }
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.progress-track {
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── QUESTION ──────────────────────────────────────────────── */
+.question-num {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.question-text {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.question-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+/* OPTION BUTTONS */
+.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.option-btn {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.option-btn:hover { border-color: var(--accent); background: rgba(74,158,255,0.06); }
+.option-btn.selected { border-color: var(--accent); background: rgba(74,158,255,0.12); }
+.option-btn .opt-label { font-weight: 600; display: block; margin-bottom: 2px; }
+.option-btn .opt-sub { font-size: 13px; color: var(--muted); display: block; }
+
+/* SLIDER */
+.slider-wrap { margin-bottom: 20px; }
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.slider-labels span { max-width: 44%; line-height: 1.3; }
+.slider-labels span:last-child { text-align: right; }
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.slider-value {
+  text-align: center;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* IMPORTANCE (1-5 stars) */
+.importance-wrap { margin-bottom: 20px; }
+.importance-scale {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.imp-btn {
+  flex: 1;
+  min-width: 56px;
+  padding: 10px 8px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+.imp-btn:hover { border-color: var(--amber); color: var(--amber); }
+.imp-btn.selected { border-color: var(--amber); background: var(--amber-bg); color: var(--amber); }
+.imp-btn.selected.disqualifier { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+.imp-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* NAV BUTTONS */
+.q-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.q-nav .spacer { flex: 1; }
+
+/* ── DISTRICT SCREEN ────────────────────────────────────────── */
+.district-option {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.district-option:hover { border-color: var(--accent); }
+.district-option h3 { margin-bottom: 4px; }
+.district-option p { font-size: 14px; color: var(--muted); margin: 0; }
+.district-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.district-field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+.district-field select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 9px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.district-field select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+/* ── RESULTS ────────────────────────────────────────────────── */
+.result-header {
+  text-align: center;
+  padding: 32px 20px 24px;
+}
+.result-header h1 { font-size: 24px; margin-bottom: 8px; }
+
+.race-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.race-result-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.race-title { font-weight: 700; font-size: 16px; }
+.race-level {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.race-level.state { background: rgba(74,158,255,0.15); color: var(--accent); }
+.race-level.county { background: rgba(245,166,35,0.15); color: var(--amber); }
+.race-level.city { background: rgba(46,204,138,0.15); color: var(--green); }
+.race-level.measure { background: rgba(229,72,77,0.15); color: var(--red); }
+
+.candidate-result {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.candidate-result:last-child { border-bottom: none; }
+.match-score {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-direction: column;
+}
+.match-score.high { background: var(--green-bg); color: var(--green); border: 2px solid var(--green); }
+.match-score.mid  { background: var(--amber-bg); color: var(--amber); border: 2px solid var(--amber); }
+.match-score.low  { background: var(--red-bg);   color: var(--red);   border: 2px solid var(--red); }
+.match-score.none { background: var(--surface2); color: var(--muted); border: 2px solid var(--border); }
+.match-score .score-pct { font-size: 14px; font-weight: 800; }
+.match-score .score-label { font-size: 9px; font-weight: 600; opacity: 0.8; }
+
+.candidate-info { flex: 1; }
+.candidate-name { font-weight: 700; font-size: 16px; }
+.candidate-party { font-size: 12px; color: var(--muted); }
+.candidate-reasons { margin-top: 8px; }
+.reason-item {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 4px 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.reason-item:first-child { border-top: none; padding-top: 0; }
+.reason-icon { flex-shrink: 0; margin-top: 1px; }
+
+.plausibility-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  margin-top: 6px;
+}
+.plausibility-badge.documented { background: var(--green-bg); color: var(--green); }
+.plausibility-badge.plausible  { background: rgba(74,158,255,0.12); color: var(--accent); }
+.plausibility-badge.vague      { background: var(--amber-bg); color: var(--amber); }
+.plausibility-badge.implausible{ background: var(--red-bg); color: var(--red); }
+
+.insufficient-data {
+  padding: 16px 18px;
+  background: var(--surface2);
+  font-size: 14px;
+  color: var(--muted);
+}
+.insufficient-data a { color: var(--accent); }
+
+.expand-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.expand-content { display: none; }
+.expand-content.open { display: block; }
+
+/* ── MEASURE RESULT ─────────────────────────────────────────── */
+.measure-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.measure-rec {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.measure-vote {
+  flex-shrink: 0;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+}
+.measure-vote.yes { background: var(--green-bg); color: var(--green); border: 2px solid var(--green); }
+.measure-vote.no  { background: var(--red-bg);   color: var(--red);   border: 2px solid var(--red); }
+.measure-vote.uncertain { background: var(--amber-bg); color: var(--amber); border: 2px solid var(--amber); }
+.measure-details { flex: 1; font-size: 14px; color: var(--muted); }
+.measure-details strong { color: var(--text); display: block; margin-bottom: 4px; }
+
+/* ── PRINT CHEAT SHEET ──────────────────────────────────────── */
+.cheat-sheet { margin-top: 24px; }
+.cheat-row {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+  font-size: 14px;
+}
+.cheat-row:last-child { border-bottom: none; }
+.cheat-race { flex: 1.2; font-weight: 600; }
+.cheat-pick { flex: 1.5; color: var(--green); font-weight: 600; }
+.cheat-logic { flex: 2; color: var(--muted); font-size: 13px; }
+
+/* ── SAVE/RESTORE ───────────────────────────────────────────── */
+.save-strip {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 16px 18px;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+
+/* ── DIVIDER ────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── SOURCE CHIP ────────────────────────────────────────────── */
+.source-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 8px;
+  margin: 2px 3px 2px 0;
+  text-decoration: none;
+}
+.source-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── TOOLTIP (disqualifier warning) ────────────────────────── */
+.disq-warning {
+  background: var(--red-bg);
+  border: 1px solid var(--red);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #ff9a9b;
+  margin-top: 8px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .card { padding: 18px; }
+  h1 { font-size: 22px; }
+  .question-text { font-size: 17px; }
+  .district-grid { grid-template-columns: 1fr; }
+  .cheat-logic { display: none; }
+}
+
+/* ── PRINT ──────────────────────────────────────────────────── */
+@media print {
+  body { background: #fff; color: #000; font-size: 12px; }
+  .site-header, .q-nav, .save-strip, .btn-primary, .expand-btn { display: none !important; }
+  .card { background: #fff; border: 1px solid #ccc; page-break-inside: avoid; }
+  .race-result, .measure-result { background: #fff; border: 1px solid #ccc; page-break-inside: avoid; }
+  a { color: #000; }
+  .source-chip { border: 1px solid #ccc; }
+  .match-score { border: 2px solid #000 !important; background: #fff !important; color: #000 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand">LA County <span>Voter Guide</span> 2026</div>
+    <div class="header-badge">🔒 100% Private</div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════
+     SCREEN 1: WELCOME
+══════════════════════════════════════════════════════ -->
+<div id="screen-welcome" class="screen active">
+<div class="container" style="padding-top:40px; padding-bottom:60px;">
+
+  <div style="text-align:center; margin-bottom:32px;">
+    <div style="font-size:48px; margin-bottom:12px;">🗳️</div>
+    <h1 style="margin-bottom:12px;">Your Personalized<br>LA County Voter Guide</h1>
+    <p class="muted" style="font-size:16px; max-width:480px; margin:0 auto;">
+      Answer a series of questions about your values and priorities.
+      We'll score every candidate and measure on your ballot against what actually matters to you.
+    </p>
+  </div>
+
+  <div class="privacy-bar">
+    <div class="icon">🔒</div>
+    <div>
+      <p style="font-weight:700; color:#7de0b5; margin-bottom:4px;">Your privacy is a design principle, not a disclaimer.</p>
+      <p>Your information will not be stored at all. This is 100% anonymous and private. Your answers never leave your device — there is no server, no database, no analytics, no tracking pixels. Everything runs entirely in your browser. You can verify this by viewing the page source.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:16px;">How this works</h2>
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="font-size:22px; flex-shrink:0;">❶</div>
+        <div>
+          <p style="font-weight:600; margin-bottom:2px;">Identify your district</p>
+          <p class="muted" style="margin:0;">We'll look up which races are actually on your ballot. No address required — you can do this manually with a link we provide.</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="font-size:22px; flex-shrink:0;">❷</div>
+        <div>
+          <p style="font-weight:600; margin-bottom:2px;">Answer questions about your values</p>
+          <p class="muted" style="margin:0;">Not a political quiz. Questions are designed to surface your real priorities — including ones you might not think to name — through concrete trade-offs, not political buzzwords. ~16–22 questions total.</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="font-size:22px; flex-shrink:0;">❸</div>
+        <div>
+          <p style="font-weight:600; margin-bottom:2px;">Get evidence-based results</p>
+          <p class="muted" style="margin:0;">Every recommendation is sourced. Every score shows its reasoning. AI was used to distill publicly available research — not to form opinions. You're seeing documented records matched against your stated priorities.</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="font-size:22px; flex-shrink:0;">❹</div>
+        <div>
+          <p style="font-weight:600; margin-bottom:2px;">Save and restore anytime</p>
+          <p class="muted" style="margin:0;">Download your answers as a JSON file to pick up where you left off. On desktop browsers, you can save directly. Mobile works too — a desktop browser gives the best experience.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="background:rgba(74,158,255,0.05); border-color:rgba(74,158,255,0.3);">
+    <p style="font-size:14px; color:var(--muted); margin-bottom:8px; font-weight:700;">A note on how AI is used here</p>
+    <p style="font-size:14px; color:var(--muted); margin:0;">
+      This guide uses AI to distill publicly available information — voting records, campaign finance filings, news coverage, candidate statements — into a structured scoring matrix. AI is a research tool here, not an opinion-giver. The scoring methodology is fully transparent: every dimension and every score can be read in the page source. If you disagree with how something is scored, you should — and you can weight it out entirely.
+    </p>
+  </div>
+
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+    <button class="btn btn-green" onclick="goToDistrict()" style="flex:1; min-width:200px;">
+      Start the Guide →
+    </button>
+    <label class="btn btn-ghost" style="flex:0; cursor:pointer;">
+      📂 Open Saved Progress
+      <input type="file" id="restore-file" accept=".json" style="display:none" onchange="restoreProgress(event)">
+    </label>
+  </div>
+
+  <p class="muted" style="font-size:13px; text-align:center;">
+    November 3, 2026 General Election · Los Angeles County
+  </p>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SCREEN 2: DISTRICT SELECTION
+══════════════════════════════════════════════════════ -->
+<div id="screen-district" class="screen">
+<div class="container" style="padding-top:36px; padding-bottom:60px;">
+
+  <h2 style="margin-bottom:6px;">Which races are on your ballot?</h2>
+  <p class="muted" style="margin-bottom:24px;">Select your districts to show only the races you'll actually vote on. Your address is never required.</p>
+
+  <div class="card">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+      <span style="font-size:20px;">🔍</span>
+      <div>
+        <h3 style="margin:0;">Look up your districts</h3>
+        <p class="muted" style="font-size:13px; margin:0;">Opens in a new tab — your information stays here.</p>
+      </div>
+    </div>
+    <a href="https://www.vote.ca.gov/myvoter" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="margin-bottom:12px;">
+      🗺️ Find My Districts on vote.ca.gov →
+    </a>
+    <p style="font-size:13px; color:var(--muted); margin:0;">
+      On that page, enter your address to see your complete sample ballot. Then come back here and select your districts below. Alternatively, use
+      <a href="https://lavote.gov/home/voting-elections/current-elections/sample-ballot" target="_blank" rel="noopener">lavote.gov sample ballot</a>.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:16px;">Select your districts</h3>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">All statewide races and measures appear for everyone. Select your local districts to add those races.</p>
+
+    <div class="district-grid">
+      <div class="district-field">
+        <label>U.S. Congressional District</label>
+        <select id="d-congress" onchange="updateDistricts()">
+          <option value="">-- Select --</option>
+          <option value="CA-30">CA-30 (Burbank, Glendale, Sherman Oaks)</option>
+          <option value="CA-33">CA-33 (Santa Monica, Culver City, Malibu)</option>
+          <option value="CA-34">CA-34 (East LA, Downtown, Koreatown)</option>
+          <option value="CA-36">CA-36 (Long Beach, Torrance, Compton)</option>
+          <option value="CA-37">CA-37 (Inglewood, Hawthorne, South LA)</option>
+          <option value="CA-38">CA-38 (Norwalk, Downey, Pico Rivera)</option>
+          <option value="CA-40">CA-40 (Whittier, Pomona, Diamond Bar)</option>
+        </select>
+      </div>
+      <div class="district-field">
+        <label>State Senate District</label>
+        <select id="d-senate" onchange="updateDistricts()">
+          <option value="">-- Select --</option>
+          <option value="SD-22">SD-22 (Torrance, Carson, Lomita)</option>
+          <option value="SD-25">SD-25 (Alhambra, Monrovia, El Monte)</option>
+          <option value="SD-26">SD-26 (Santa Clarita, Simi Valley)</option>
+          <option value="SD-27">SD-27 (Long Beach, Lakewood)</option>
+          <option value="SD-28">SD-28 (West LA, Beverly Hills, Culver City)</option>
+          <option value="SD-29">SD-29 (Burbank, Pasadena, Glendale)</option>
+          <option value="SD-30">SD-30 (Compton, Inglewood, Hawthorne)</option>
+          <option value="SD-33">SD-33 (East LA, Boyle Heights)</option>
+        </select>
+      </div>
+      <div class="district-field">
+        <label>State Assembly District</label>
+        <select id="d-assembly" onchange="updateDistricts()">
+          <option value="">-- Select --</option>
+          <option value="AD-42">AD-42 (Lancaster, Palmdale)</option>
+          <option value="AD-43">AD-43 (Alhambra, Monterey Park)</option>
+          <option value="AD-44">AD-44 (Pasadena, Arcadia)</option>
+          <option value="AD-45">AD-45 (Norwalk, Whittier)</option>
+          <option value="AD-50">AD-50 (Long Beach, Compton)</option>
+          <option value="AD-51">AD-51 (East LA, Boyle Heights)</option>
+          <option value="AD-52">AD-52 (South Gate, Downey)</option>
+          <option value="AD-53">AD-53 (Torrance, Redondo Beach)</option>
+          <option value="AD-54">AD-54 (Inglewood, Hawthorne)</option>
+          <option value="AD-55">AD-55 (Palms, West LA, Culver City)</option>
+          <option value="AD-57">AD-57 (Burbank, Glendale)</option>
+          <option value="AD-58">AD-58 (Santa Monica, Malibu)</option>
+          <option value="AD-62">AD-62 (Compton, Carson)</option>
+          <option value="AD-63">AD-63 (Beverly Hills, Brentwood)</option>
+          <option value="AD-64">AD-64 (Koreatown, Downtown LA)</option>
+        </select>
+      </div>
+      <div class="district-field">
+        <label>City</label>
+        <select id="d-city" onchange="updateDistricts()">
+          <option value="">-- Select --</option>
+          <option value="LA">City of Los Angeles</option>
+          <option value="LB">Long Beach</option>
+          <option value="Pasadena">Pasadena</option>
+          <option value="Glendale">Glendale</option>
+          <option value="Burbank">Burbank</option>
+          <option value="Culver City">Culver City</option>
+          <option value="Santa Monica">Santa Monica</option>
+          <option value="Inglewood">Inglewood</option>
+          <option value="Torrance">Torrance</option>
+          <option value="unincorporated">Unincorporated LA County</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="la-city-fields" style="display:none; margin-top:14px; border-top:1px solid var(--border); padding-top:14px;">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:10px;">City of LA races:</p>
+      <div class="district-grid">
+        <div class="district-field">
+          <label>City Council District</label>
+          <select id="d-citycouncil" onchange="updateDistricts()">
+            <option value="">-- Select --</option>
+            <option value="CD-1">CD-1 (Echo Park, Silver Lake, Koreatown)</option>
+            <option value="CD-2">CD-2 (Studio City, Valley Village)</option>
+            <option value="CD-4">CD-4 (Los Feliz, Griffith Park)</option>
+            <option value="CD-5">CD-5 (West LA, Palms, Cheviot Hills)</option>
+            <option value="CD-6">CD-6 (Van Nuys, North Hollywood)</option>
+            <option value="CD-7">CD-7 (Sunland-Tujunga, Sylmar)</option>
+            <option value="CD-8">CD-8 (South Central, Crenshaw)</option>
+            <option value="CD-9">CD-9 (South Central, Downtown)</option>
+            <option value="CD-10">CD-10 (Mid-City, West Adams)</option>
+            <option value="CD-12">CD-12 (Chatsworth, Northridge)</option>
+            <option value="CD-14">CD-14 (Eagle Rock, El Sereno)</option>
+          </select>
+        </div>
+        <div class="district-field">
+          <label>LAUSD Board District</label>
+          <select id="d-lausd" onchange="updateDistricts()">
+            <option value="">-- Select --</option>
+            <option value="LAUSD-1">District 1 (Northeast LA)</option>
+            <option value="LAUSD-2">District 2 (South Central)</option>
+            <option value="LAUSD-3">District 3 (West LA, Westchester)</option>
+            <option value="LAUSD-4">District 4 (Beverly Hills, Palms)</option>
+            <option value="LAUSD-5">District 5 (East LA, Boyle Heights)</option>
+            <option value="LAUSD-7">District 7 (Southeast, Harbor)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <button class="btn btn-green" onclick="startQuestionnaire()" id="btn-start-q" disabled style="opacity:0.5;">
+        Continue to Questions →
+      </button>
+      <p id="district-hint" class="muted" style="font-size:13px; margin-top:8px;">Select at least one district above to continue.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SCREEN 3: QUESTIONNAIRE
+══════════════════════════════════════════════════════ -->
+<div id="screen-questionnaire" class="screen">
+<div class="container" style="padding-top:32px; padding-bottom:60px;">
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="q-progress-text">Question 1</span>
+      <span id="q-progress-pct" class="muted">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="q-progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div id="question-container" class="card"></div>
+
+  <div class="q-nav">
+    <button class="btn btn-ghost btn-sm" onclick="prevQuestion()" id="btn-back" style="display:none;">← Back</button>
+    <div class="spacer"></div>
+    <button class="btn btn-primary btn-sm" onclick="nextQuestion()" id="btn-next" disabled>Next →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SCREEN 4: RESULTS
+══════════════════════════════════════════════════════ -->
+<div id="screen-results" class="screen">
+<div class="container" style="padding-top:32px; padding-bottom:60px;">
+
+  <div class="result-header">
+    <h1>Your Personalized Voter Guide</h1>
+    <p class="muted">November 3, 2026 · Los Angeles County</p>
+    <p class="muted" style="font-size:13px; margin-top:6px;">Scores reflect publicly documented records weighted by your stated priorities.</p>
+  </div>
+
+  <div class="save-strip" style="border-radius:var(--radius); border:1px solid var(--border); margin-bottom:24px;">
+    <button class="btn btn-ghost btn-sm" onclick="saveProgress()">💾 Save Progress</button>
+    <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+    <button class="btn btn-ghost btn-sm" onclick="retakeQuestions()">↩ Retake Questions</button>
+  </div>
+
+  <div id="results-container"></div>
+
+  <div class="cheat-sheet card" id="cheat-sheet">
+    <div class="section-title">Cheat Sheet — Every Race at a Glance</div>
+    <div id="cheat-rows"></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT ENGINE
+══════════════════════════════════════════════════════ -->
+<script>
+// ── STATE ────────────────────────────────────────────────────
+const state = {
+  districts: {},
+  answers: {},        // questionId -> value
+  currentQ: 0,
+  questionPath: [],   // ordered list of question IDs to show
+};
+
+// ── SCREEN NAV ───────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function goToDistrict() { showScreen('district'); }
+function retakeQuestions() { state.currentQ = 0; showScreen('questionnaire'); renderQuestion(); }
+
+// ── DISTRICT LOGIC ────────────────────────────────────────────
+function updateDistricts() {
+  state.districts.congress    = document.getElementById('d-congress').value;
+  state.districts.senate      = document.getElementById('d-senate').value;
+  state.districts.assembly    = document.getElementById('d-assembly').value;
+  state.districts.city        = document.getElementById('d-city').value;
+  state.districts.citycouncil = document.getElementById('d-citycouncil').value;
+  state.districts.lausd       = document.getElementById('d-lausd').value;
+
+  const isLA = state.districts.city === 'LA';
+  document.getElementById('la-city-fields').style.display = isLA ? 'block' : 'none';
+
+  const hasEnough = state.districts.congress || state.districts.senate || state.districts.assembly;
+  const btn = document.getElementById('btn-start-q');
+  btn.disabled = !hasEnough;
+  btn.style.opacity = hasEnough ? '1' : '0.5';
+  document.getElementById('district-hint').style.display = hasEnough ? 'none' : 'block';
+}
+
+function startQuestionnaire() {
+  buildQuestionPath();
+  state.currentQ = 0;
+  showScreen('questionnaire');
+  renderQuestion();
+}
+
+// ── QUESTION DEFINITIONS ──────────────────────────────────────
+const QUESTIONS = [
+
+  // BLOCK 1: ORIENTATION (everyone gets these)
+  {
+    id: 'q_broken_promise',
+    block: 1,
+    type: 'options',
+    text: 'A politician makes a promise they don\'t deliver on. What matters most to you?',
+    sub: 'There\'s no right answer here — this is about your instinct.',
+    options: [
+      { value: 'lied', label: 'They lied intentionally',       sub: 'They knew it wasn\'t possible and said it anyway.' },
+      { value: 'misjudged', label: 'They misjudged reality',   sub: 'They believed it but failed to do the homework.' },
+      { value: 'outcome', label: 'The outcome is what matters', sub: 'How it got broken matters less than whether it got fixed.' },
+    ],
+    stateKey: 'broken_promise',
+  },
+  {
+    id: 'q_record_vs_platform',
+    block: 1,
+    type: 'options',
+    text: 'A candidate has a strong delivery record but positions you partly disagree with. Their challenger aligns perfectly with your views but has never held office. Which concerns you more?',
+    sub: 'Both are real concerns — pick the one that weighs heavier.',
+    options: [
+      { value: 'no_record',   label: 'No track record',         sub: 'Promises without proof make me skeptical.' },
+      { value: 'wrong_views', label: 'Wrong positions',         sub: 'I\'d rather have someone I agree with, even untested.' },
+      { value: 'both_equal',  label: 'Equally concerning',      sub: 'I want alignment and delivery.' },
+    ],
+    stateKey: 'record_vs_platform',
+  },
+  {
+    id: 'q_primary_lens',
+    block: 1,
+    type: 'options',
+    text: 'Which best describes what you want from an elected official?',
+    options: [
+      { value: 'manager',    label: 'Responsible steward',      sub: 'Manage resources well, avoid waste, stay in their lane.' },
+      { value: 'reformer',   label: 'Change agent',             sub: 'Challenge the status quo, disrupt broken systems.' },
+      { value: 'protector',  label: 'Rights defender',          sub: 'Protect individual rights and democratic institutions.' },
+      { value: 'builder',    label: 'Builder and fixer',        sub: 'Get things built, get things fixed, measurable results.' },
+    ],
+    stateKey: 'primary_lens',
+  },
+
+  // BLOCK 2: CORE VALUES (tension-framed sliders)
+  {
+    id: 'q_homelessness',
+    block: 2,
+    type: 'slider',
+    text: 'On homelessness: encampment clearances vs. housing-first programs',
+    sub: 'Research shows Housing First reduces chronic homelessness but takes 2–4 years to show results. Enforcement-only approaches reduce visible encampments faster but don\'t address underlying drivers.',
+    leftLabel: 'Fast clearances, even if housing placement takes longer',
+    rightLabel: 'Housing-first approach, even if visible results are slower',
+    stateKey: 'homelessness_stance',
+  },
+  {
+    id: 'q_publicsafety',
+    block: 2,
+    type: 'slider',
+    text: 'On public safety: prevention vs. enforcement',
+    sub: 'LA County spends roughly $3.5B/year on law enforcement. Competing approaches prioritize where that money goes.',
+    leftLabel: 'More law enforcement presence and faster response capacity',
+    rightLabel: 'Redirect resources toward social services and crime prevention',
+    stateKey: 'publicsafety_stance',
+  },
+  {
+    id: 'q_housing',
+    block: 2,
+    type: 'slider',
+    text: 'On housing supply: density vs. neighborhood character',
+    sub: 'LA\'s housing shortage contributes directly to homelessness and displacement. More density near transit increases supply but changes neighborhoods.',
+    leftLabel: 'Allow denser development near transit to increase housing supply',
+    rightLabel: 'Protect neighborhood character and existing zoning',
+    stateKey: 'housing_stance',
+  },
+  {
+    id: 'q_taxes',
+    block: 2,
+    type: 'slider',
+    text: 'On tax-funded services: willing to pay more vs. skeptical of new taxes',
+    sub: 'LA County + LA City combined sales tax is already among the highest in the nation at 10.25%. Residents are regularly asked to approve new measures.',
+    leftLabel: 'Willing to pay more taxes for specific, audited public services',
+    rightLabel: 'Skeptical of new taxes without demonstrated efficiency in current spending',
+    stateKey: 'taxes_stance',
+  },
+  {
+    id: 'q_accountability',
+    block: 2,
+    type: 'slider',
+    text: 'On elected official conduct: job performance vs. personal ethics',
+    sub: 'LA City Council members have faced corruption charges, ethics violations, and misconduct allegations in recent years.',
+    leftLabel: 'Private conduct is irrelevant if their public job performance is strong',
+    rightLabel: 'Ethical conduct in personal life reflects character relevant to office',
+    stateKey: 'ethics_stance',
+  },
+  {
+    id: 'q_criminaljustice',
+    block: 2,
+    type: 'slider',
+    text: 'On criminal justice: rehabilitation vs. accountability',
+    sub: 'California has undergone major sentencing reforms (Prop 47, Prop 57). Debate continues on whether current approach reduces recidivism or undermines public safety.',
+    leftLabel: 'Focus on rehabilitation and reducing incarceration rates',
+    rightLabel: 'Focus on accountability and consequences for criminal behavior',
+    stateKey: 'cj_stance',
+  },
+
+  // BLOCK 3: LENS-SPECIFIC (branched)
+  {
+    id: 'q_budget_transparency',
+    block: '3a',
+    condition: (a) => ['manager','builder'].includes(a.primary_lens),
+    type: 'options',
+    text: 'A city program shows strong outcomes but costs 40% more than projected with no independent audit. Do you support continuing it?',
+    sub: 'This tests whether demonstrated results can outweigh accountability gaps.',
+    options: [
+      { value: 'results_win',  label: 'Yes — results justify the cost',     sub: 'Outcomes matter more than process compliance.' },
+      { value: 'audit_first',  label: 'Only after an independent audit',    sub: 'I need to know where the money actually went.' },
+      { value: 'no_audit_no',  label: 'No — lack of oversight is disqualifying', sub: 'Accountability is non-negotiable regardless of results.' },
+    ],
+    stateKey: 'budget_transparency',
+  },
+  {
+    id: 'q_reform_tactics',
+    block: '3b',
+    condition: (a) => ['reformer','protector'].includes(a.primary_lens),
+    type: 'options',
+    text: 'A reform candidate uses aggressive tactics — protests, public confrontations, procedural disruption — to push their agenda. How do you view this?',
+    options: [
+      { value: 'tactics_fine',   label: 'Fine — change requires pressure',     sub: 'The system doesn\'t reform itself.' },
+      { value: 'tactics_mixed',  label: 'Depends on what they\'re fighting for', sub: 'Tactics are acceptable if the cause is right.' },
+      { value: 'tactics_nope',   label: 'Concerning — I want institutional governance', sub: 'Disruption undermines the process.' },
+    ],
+    stateKey: 'reform_tactics',
+  },
+
+  // BLOCK 4: PROMISE CREDIBILITY
+  {
+    id: 'q_promise_weight',
+    block: 4,
+    type: 'slider',
+    text: 'How much weight should this guide give to a candidate\'s track record of delivering vs. their current stated platform?',
+    leftLabel: 'Weight current platform — what they say they\'ll do',
+    rightLabel: 'Weight track record — what they\'ve actually done',
+    stateKey: 'promise_weight',
+  },
+  {
+    id: 'q_no_record',
+    block: 4,
+    type: 'options',
+    text: 'For candidates with no prior elected record, how should this guide treat their stated platform?',
+    options: [
+      { value: 'face_value',    label: 'Take it at face value',              sub: 'Everyone deserves a chance to make their case.' },
+      { value: 'flag_only',     label: 'Flag the lack of record clearly',    sub: 'Note it but don\'t penalize — inexperience ≠ bad.' },
+      { value: 'heavy_discount','label': 'Apply a heavy skepticism discount', sub: 'Without a track record, platform promises are uncertain.' },
+    ],
+    stateKey: 'no_record_treatment',
+  },
+
+  // BLOCK 5: DEALBREAKERS
+  {
+    id: 'q_dealbreakers',
+    block: 5,
+    type: 'dealbreakers',
+    text: 'Are any of the following automatic disqualifiers for you?',
+    sub: 'Select "Disqualifier" for anything that would eliminate a candidate regardless of everything else. "Concern" means significant weight but not automatic elimination.',
+    items: [
+      { id: 'db_misconduct',   label: 'Credibly accused of misconduct while in office (not convicted)' },
+      { id: 'db_trump',        label: 'Has publicly supported or endorsed Donald Trump' },
+      { id: 'db_antiabortion', label: 'Opposes abortion access' },
+      { id: 'db_ice',          label: 'Supports stricter immigration enforcement including cooperation with federal ICE' },
+      { id: 'db_lgbtq',        label: 'Opposes LGBTQ+ anti-discrimination protections' },
+      { id: 'db_taxhike',      label: 'Voted to increase taxes without demonstrated ROI' },
+      { id: 'db_bigdonor',     label: 'Received 50%+ of campaign funding from a single industry or donor group' },
+      { id: 'db_flipflop',     label: 'Changed stated position on a major issue within the past 4 years' },
+    ],
+    stateKey: 'dealbreakers',
+  },
+
+  // BLOCK 6: OUTPUT PREFERENCES
+  {
+    id: 'q_result_depth',
+    block: 6,
+    type: 'options',
+    text: 'How much detail do you want in your results?',
+    options: [
+      { value: 'minimal',  label: 'Just the recommendation',         sub: 'Who to vote for, one reason each.' },
+      { value: 'standard', label: 'Recommendations with key reasons', sub: 'Top 2–3 factors with sources.' },
+      { value: 'full',     label: 'Full breakdown with all sources',  sub: 'Everything — every dimension, every source.' },
+    ],
+    stateKey: 'result_depth',
+  },
+  {
+    id: 'q_show_comparison',
+    block: 6,
+    type: 'options',
+    text: 'Do you want to see where candidates directly disagree with each other?',
+    options: [
+      { value: 'yes',   label: 'Yes — show me the contrasts' },
+      { value: 'no',    label: 'No — just show my match scores' },
+    ],
+    stateKey: 'show_comparison',
+  },
+];
+
+// ── BUILD QUESTION PATH ───────────────────────────────────────
+function buildQuestionPath() {
+  state.questionPath = QUESTIONS
+    .filter(q => !q.condition || q.condition(state.answers))
+    .map(q => q.id);
+}
+
+function rebuildPathAfterAnswer() {
+  // Re-evaluate conditions after each block 1/2 answer
+  const newPath = QUESTIONS
+    .filter(q => !q.condition || q.condition(state.answers))
+    .map(q => q.id);
+  state.questionPath = newPath;
+}
+
+// ── RENDER QUESTION ───────────────────────────────────────────
+function renderQuestion() {
+  const qId = state.questionPath[state.currentQ];
+  const q = QUESTIONS.find(x => x.id === qId);
+  if (!q) { computeAndShowResults(); return; }
+
+  const total = state.questionPath.length;
+  const pct = Math.round((state.currentQ / total) * 100);
+  document.getElementById('q-progress-text').textContent =
+    `Question ${state.currentQ + 1} — approximately ${total - state.currentQ} remaining`;
+  document.getElementById('q-progress-pct').textContent = pct + '%';
+  document.getElementById('q-progress-fill').style.width = pct + '%';
+
+  document.getElementById('btn-back').style.display = state.currentQ > 0 ? 'inline-flex' : 'none';
+  document.getElementById('btn-next').disabled = !hasAnswer(q);
+  document.getElementById('btn-next').textContent =
+    state.currentQ === total - 1 ? 'See My Results →' : 'Next →';
+
+  const cont = document.getElementById('question-container');
+  cont.innerHTML = renderQuestionHTML(q);
+  restoreAnswer(q);
+}
+
+function hasAnswer(q) {
+  const ans = state.answers;
+  if (q.type === 'options') return !!ans[q.stateKey];
+  if (q.type === 'slider')  return ans[q.stateKey] !== undefined;
+  if (q.type === 'dealbreakers') return true; // always OK to skip
+  return false;
+}
+
+function renderQuestionHTML(q) {
+  let html = `<div class="question-num">Block ${q.block} · Question ${state.currentQ + 1}</div>`;
+  html += `<div class="question-text">${q.text}</div>`;
+  if (q.sub) html += `<div class="question-sub">${q.sub}</div>`;
+
+  if (q.type === 'options') {
+    html += '<div class="options">';
+    q.options.forEach(opt => {
+      html += `<button class="option-btn" data-value="${opt.value}" onclick="selectOption('${q.stateKey}','${opt.value}',this)">
+        <span class="opt-label">${opt.label}</span>
+        ${opt.sub ? `<span class="opt-sub">${opt.sub}</span>` : ''}
+      </button>`;
+    });
+    html += '</div>';
+  }
+
+  if (q.type === 'slider') {
+    const val = state.answers[q.stateKey] !== undefined ? state.answers[q.stateKey] : 50;
+    html += `<div class="slider-wrap">
+      <div class="slider-labels">
+        <span>${q.leftLabel}</span>
+        <span>${q.rightLabel}</span>
+      </div>
+      <input type="range" min="0" max="100" value="${val}"
+        oninput="setSlider('${q.stateKey}', this.value)"
+        onchange="setSlider('${q.stateKey}', this.value)">
+      <div class="slider-value" id="sliderval-${q.stateKey}">${sliderLabel(val)}</div>
+    </div>`;
+    // Sliders always have a value, so enable next
+    setTimeout(() => { document.getElementById('btn-next').disabled = false; }, 0);
+  }
+
+  if (q.type === 'dealbreakers') {
+    html += '<div style="display:flex; flex-direction:column; gap:10px; margin-bottom:8px;">';
+    const saved = state.answers[q.stateKey] || {};
+    q.items.forEach(item => {
+      const cur = saved[item.id] || 'none';
+      html += `<div class="card-sm" style="padding:12px 14px;">
+        <p style="font-size:14px; margin-bottom:10px;">${item.label}</p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-sm ${cur==='disqualifier' ? 'btn-primary' : 'btn-ghost'}"
+            style="${cur==='disqualifier' ? 'background:var(--red);' : ''}"
+            onclick="setDealbreaker('${q.stateKey}','${item.id}','disqualifier',this)">
+            🚫 Disqualifier
+          </button>
+          <button class="btn btn-sm ${cur==='concern' ? 'btn-primary' : 'btn-ghost'}"
+            style="${cur==='concern' ? 'background:var(--amber); color:#000;' : ''}"
+            onclick="setDealbreaker('${q.stateKey}','${item.id}','concern',this)">
+            ⚠️ Concern
+          </button>
+          <button class="btn btn-sm ${cur==='none' ? 'btn-primary' : 'btn-ghost'}"
+            onclick="setDealbreaker('${q.stateKey}','${item.id}','none',this)">
+            Not a factor
+          </button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+    // Always allow next on dealbreakers
+    setTimeout(() => { document.getElementById('btn-next').disabled = false; }, 0);
+  }
+
+  return html;
+}
+
+function sliderLabel(v) {
+  v = parseInt(v);
+  if (v <= 20) return 'Strongly left';
+  if (v <= 40) return 'Leaning left';
+  if (v <= 60) return 'Balanced';
+  if (v <= 80) return 'Leaning right';
+  return 'Strongly right';
+}
+
+function selectOption(key, value, el) {
+  state.answers[key] = value;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-next').disabled = false;
+  rebuildPathAfterAnswer();
+}
+
+function setSlider(key, value) {
+  state.answers[key] = parseInt(value);
+  const label = document.getElementById('sliderval-' + key);
+  if (label) label.textContent = sliderLabel(value);
+  document.getElementById('btn-next').disabled = false;
+}
+
+function setDealbreaker(questionKey, itemId, value, btn) {
+  if (!state.answers[questionKey]) state.answers[questionKey] = {};
+  state.answers[questionKey][itemId] = value;
+  // Update button states in parent
+  const parent = btn.closest('.card-sm');
+  parent.querySelectorAll('.btn').forEach(b => {
+    b.className = 'btn btn-sm btn-ghost';
+    b.style.background = '';
+    b.style.color = '';
+  });
+  btn.className = 'btn btn-sm btn-primary';
+  if (value === 'disqualifier') { btn.style.background = 'var(--red)'; }
+  if (value === 'concern')      { btn.style.background = 'var(--amber)'; btn.style.color = '#000'; }
+}
+
+function restoreAnswer(q) {
+  const ans = state.answers[q.stateKey];
+  if (!ans) return;
+  if (q.type === 'options') {
+    document.querySelectorAll('.option-btn').forEach(b => {
+      if (b.dataset.value === ans) b.classList.add('selected');
+    });
+  }
+  if (q.type === 'slider') {
+    const input = document.querySelector('input[type=range]');
+    if (input) input.value = ans;
+  }
+}
+
+function nextQuestion() {
+  const qId = state.questionPath[state.currentQ];
+  const q = QUESTIONS.find(x => x.id === qId);
+  // Default slider if skipped
+  if (q && q.type === 'slider' && state.answers[q.stateKey] === undefined) {
+    state.answers[q.stateKey] = 50;
+  }
+  state.currentQ++;
+  if (state.currentQ >= state.questionPath.length) {
+    computeAndShowResults();
+  } else {
+    rebuildPathAfterAnswer();
+    renderQuestion();
+  }
+}
+
+function prevQuestion() {
+  if (state.currentQ > 0) {
+    state.currentQ--;
+    renderQuestion();
+  }
+}
+
+// ── SCORING MATRIX ────────────────────────────────────────────
+// Dimensions:
+//   fiscal_mgmt, homelessness, publicsafety, housing,
+//   ethics, criminaljustice, reform_capacity, rights_defense
+// Score: 0–10. null = insufficient data.
+// promise_plausibility: 'documented'|'plausible'|'vague'|'implausible'
+// dealbreaker_flags: matches ids in q_dealbreakers items
+
+const CANDIDATES = {
+  // ── GOVERNOR ──────────────────────────────────────────────
+  gov_becerra: {
+    name: 'Rob Bonta', race: 'governor', display_race: 'Governor',
+    party: 'Democrat', level: 'state',
+    ballot_designation: 'Attorney General of California',
+    note: 'NOTE: Xavier Becerra stepped down; Rob Bonta currently holds AG. Governor race TBD — placeholder pending SoS confirmation.',
+    data_confidence: 'low',
+    dimensions: {},
+    promise_plausibility: { rating: 'vague', examples: [] },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false },
+    sources: [],
+    stub: true,
+    stub_links: [
+      { label: 'Ballotpedia', url: 'https://ballotpedia.org/California_gubernatorial_election,_2026' },
+      { label: 'LAist voter guide', url: 'https://laist.com' },
+      { label: 'CalMatters', url: 'https://calmatters.org/california-voter-guide-2026/' },
+    ],
+  },
+
+  gov_schiff: {
+    name: 'Adam Schiff', race: 'governor', display_race: 'Governor',
+    party: 'Democrat', level: 'state',
+    ballot_designation: 'U.S. Senator',
+    dimensions: {
+      fiscal_mgmt:      { score: 5, reasoning: 'Supported infrastructure spending; less focus on spending controls. No concrete open-ledger proposals.', source: 'https://schiff.senate.gov' },
+      homelessness:     { score: 6, reasoning: 'Backed federal funding for Housing First programs; co-authored legislation on affordable housing.', source: 'https://schiff.senate.gov' },
+      publicsafety:     { score: 6, reasoning: 'Supports community-based violence intervention alongside traditional law enforcement. Backed Safer Communities Act.', source: 'https://ballotpedia.org/Adam_Schiff' },
+      housing:          { score: 7, reasoning: 'Supports increasing housing density near transit. Backed SB 9-style reforms at federal level.', source: 'https://calmatters.org' },
+      ethics:           { score: 7, reasoning: 'No personal ethics violations. Strong institutional record. Led House Intelligence oversight.', source: 'https://cjp.ca.gov' },
+      criminaljustice:  { score: 6, reasoning: 'Moderate — backed sentencing reform but also tough-on-crime positions depending on context.', source: 'https://ballotpedia.org/Adam_Schiff' },
+      reform_capacity:  { score: 5, reasoning: 'Career politician; less demonstrated capacity to reform state-level bureaucracy.', source: 'https://calmatters.org' },
+      rights_defense:   { score: 9, reasoning: 'Consistent record defending democratic institutions, voting rights, abortion rights.', source: 'https://schiff.senate.gov' },
+    },
+    promise_plausibility: {
+      rating: 'plausible',
+      examples: [
+        { promise: 'Affordable housing expansion', outcome: 'Backed federal legislation; state-level execution TBD', source: 'https://schiff.senate.gov' },
+        { promise: 'Housing affordability', outcome: 'Plausible given legislative record but no governor-specific track record', source: 'https://calmatters.org' },
+      ],
+    },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false, db_misconduct: false },
+    data_confidence: 'medium',
+    sources: ['https://schiff.senate.gov', 'https://ballotpedia.org/Adam_Schiff', 'https://calmatters.org/california-voter-guide-2026/'],
+  },
+
+  gov_galperin: {
+    name: 'Ron Galperin', race: 'governor', display_race: 'Governor',
+    party: 'Democrat', level: 'state',
+    ballot_designation: 'Former LA City Controller',
+    dimensions: {
+      fiscal_mgmt:      { score: 9, reasoning: 'As LA City Controller, built and published open-data spending dashboards. Documented $300M+ in audit findings. Actual open-ledger experience.', source: 'https://lacontroller.org' },
+      homelessness:     { score: 6, reasoning: 'Audited LAHSA multiple times, exposing waste. Supports Housing First with accountability mechanisms.', source: 'https://lacontroller.org/audits-and-reports/homelessness/' },
+      publicsafety:     { score: 6, reasoning: 'Supported reform-oriented public safety while maintaining traditional law enforcement funding.', source: 'https://ballotpedia.org/Ron_Galperin' },
+      housing:          { score: 6, reasoning: 'Supports supply increases; no major state housing legislation track record.', source: 'https://calmatters.org' },
+      ethics:           { score: 8, reasoning: 'No ethics violations. Proactively published his own office expenditures online.', source: 'https://lacontroller.org' },
+      criminaljustice:  { score: 5, reasoning: 'Limited public record on criminal justice reform specifically.', source: 'https://ballotpedia.org/Ron_Galperin' },
+      reform_capacity:  { score: 8, reasoning: 'Strongest demonstrated capacity to reform government operations among major candidates.', source: 'https://lacontroller.org' },
+      rights_defense:   { score: 7, reasoning: 'Consistent record supporting rights; primary focus has been governance/accountability.', source: 'https://ballotpedia.org/Ron_Galperin' },
+    },
+    promise_plausibility: {
+      rating: 'documented',
+      examples: [
+        { promise: 'Open government spending data', outcome: 'DELIVERED — built checkbook.lacity.org as Controller', source: 'https://checkbook.lacity.org' },
+        { promise: 'LAHSA accountability', outcome: 'DELIVERED — multiple audits, documented findings', source: 'https://lacontroller.org/audits-and-reports/homelessness/' },
+      ],
+    },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false, db_misconduct: false },
+    data_confidence: 'high',
+    sources: ['https://lacontroller.org', 'https://ballotpedia.org/Ron_Galperin', 'https://calmatters.org/california-voter-guide-2026/'],
+  },
+
+  // ── INSURANCE COMMISSIONER ────────────────────────────────
+  ins_allen: {
+    name: 'Ben Allen', race: 'insurance_commissioner', display_race: 'Insurance Commissioner',
+    party: 'Democrat', level: 'state',
+    ballot_designation: 'State Senator',
+    dimensions: {
+      fiscal_mgmt:    { score: 6, reasoning: 'Moderate fiscal record. Authored SB 54 (climate risk disclosure for insurers).', source: 'https://ballotpedia.org/Ben_Allen' },
+      ethics:         { score: 7, reasoning: 'No ethics violations on record. 10-year legislative career without scandal.', source: 'https://ballotpedia.org/Ben_Allen' },
+      rights_defense: { score: 8, reasoning: 'Strong record on environmental justice, education equity, consumer protection.', source: 'https://leginfo.legislature.ca.gov' },
+      reform_capacity: { score: 6, reasoning: 'Legislative experience; no prior insurance industry regulatory experience.', source: 'https://ballotpedia.org/Ben_Allen' },
+    },
+    promise_plausibility: {
+      rating: 'plausible',
+      examples: [
+        { promise: 'Reform homeowners insurance market after wildfire crisis', outcome: 'Plausible — authored SB 54 on climate risk; familiar with insurance policy landscape', source: 'https://ballotpedia.org/Ben_Allen' },
+      ],
+    },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false },
+    data_confidence: 'medium',
+    sources: ['https://ballotpedia.org/Ben_Allen', 'https://leginfo.legislature.ca.gov', 'https://calmatters.org'],
+    context_note: 'After the Pacific Palisades and Eaton fires, the Insurance Commissioner race may be the most consequential on the ballot for many LA residents. The current market crisis — insurers fleeing California — is the central issue.',
+  },
+
+  ins_kim: {
+    name: 'Dave Kim', race: 'insurance_commissioner', display_race: 'Insurance Commissioner',
+    party: 'Democrat', level: 'state',
+    ballot_designation: 'Insurance Industry Executive',
+    dimensions: {
+      fiscal_mgmt:    { score: 6, reasoning: 'Private sector background in insurance industry — direct domain expertise.', source: 'https://ballotpedia.org/Dave_Kim' },
+      ethics:         { score: 5, reasoning: 'No public record of violations; limited public record overall.', source: 'https://ballotpedia.org/Dave_Kim' },
+      reform_capacity: { score: 7, reasoning: 'Industry insider — either uniquely positioned to reform it or captured by it. Data insufficient to determine.', source: 'https://ballotpedia.org/Dave_Kim' },
+    },
+    promise_plausibility: {
+      rating: 'vague',
+      examples: [
+        { promise: 'Fix the homeowners insurance crisis', outcome: 'Industry background gives domain knowledge; specific reform plans not well-documented', source: 'https://ballotpedia.org/Dave_Kim' },
+      ],
+    },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false },
+    data_confidence: 'low',
+    sources: ['https://ballotpedia.org/Dave_Kim'],
+  },
+
+  // ── LA COUNTY SHERIFF ─────────────────────────────────────
+  sher_luna: {
+    name: 'Robert Luna', race: 'la_sheriff', display_race: 'LA County Sheriff',
+    party: 'Democrat', level: 'county',
+    ballot_designation: 'Los Angeles County Sheriff (Incumbent)',
+    dimensions: {
+      fiscal_mgmt:    { score: 6, reasoning: 'Proposed $4.4B budget; some transparency improvements over predecessor. No open-data dashboard yet.', source: 'https://lasd.org' },
+      publicsafety:   { score: 7, reasoning: 'Led reform agenda — deputy gangs investigation, LASD oversight. Professional law enforcement background (Long Beach PD).', source: 'https://laist.com/news/criminal-justice' },
+      ethics:         { score: 7, reasoning: 'No personal misconduct. Inherited significant structural issues (deputy gangs, jail conditions). Made documented progress on oversight.', source: 'https://lasd.org' },
+      criminaljustice: { score: 6, reasoning: 'Reform-oriented relative to predecessor (Villanueva). Supports diversion programs. Not a pure decarceration advocate.', source: 'https://ballotpedia.org/Robert_Luna' },
+      reform_capacity: { score: 7, reasoning: 'Implemented oversight board cooperation that predecessor refused. Documented institutional change.', source: 'https://lasd.org' },
+    },
+    promise_plausibility: {
+      rating: 'documented',
+      examples: [
+        { promise: 'Cooperate with Civilian Oversight Commission', outcome: 'DELIVERED — reversed Villanueva\'s obstruction stance', source: 'https://laist.com/news/criminal-justice' },
+        { promise: 'Investigate deputy gang problem', outcome: 'IN PROGRESS — investigations opened, slow results', source: 'https://knock.la' },
+      ],
+    },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false, db_misconduct: false },
+    data_confidence: 'high',
+    sources: ['https://lasd.org', 'https://ballotpedia.org/Robert_Luna', 'https://laist.com/news/criminal-justice', 'https://knock.la'],
+  },
+
+  // ── CA-37 (ALREADY RESEARCHED) ────────────────────────────
+  ca37_kamlager: {
+    name: 'Sydney Kamlager-Dove', race: 'congress_CA-37', display_race: 'U.S. Congress — CA-37',
+    party: 'Democrat', level: 'federal',
+    ballot_designation: 'U.S. Representative (Incumbent)',
+    dimensions: {
+      fiscal_mgmt:    { score: 5, reasoning: 'Backed major federal spending bills (IRA, IIJA). Less emphasis on spending controls.', source: 'https://kamlager-dove.house.gov' },
+      homelessness:   { score: 8, reasoning: 'District includes some of LA\'s most impacted areas. Secured federal funding for housing vouchers and shelter.', source: 'https://kamlager-dove.house.gov' },
+      rights_defense: { score: 9, reasoning: 'Abortion rights, LGBTQ+ rights, voting rights — consistent legislative record.', source: 'https://votesmart.org' },
+      reform_capacity: { score: 6, reasoning: 'Minority party in House; limited capacity to pass major legislation.', source: 'https://ballotpedia.org/Sydney_Kamlager-Dove' },
+      ethics:         { score: 8, reasoning: 'No ethics violations. Former CA State Senator.', source: 'https://ballotpedia.org/Sydney_Kamlager-Dove' },
+    },
+    promise_plausibility: {
+      rating: 'plausible',
+      examples: [
+        { promise: 'Federal housing investment in district', outcome: 'Secured $3M+ for affordable housing — documented', source: 'https://kamlager-dove.house.gov' },
+      ],
+    },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false },
+    data_confidence: 'high',
+    sources: ['https://kamlager-dove.house.gov', 'https://ballotpedia.org/Sydney_Kamlager-Dove', 'https://votesmart.org/candidate/95740'],
+  },
+
+  // ── SD-28 ──────────────────────────────────────────────────
+  sd28_lsc: {
+    name: 'Laura Friedman', race: 'senate_SD-28', display_race: 'State Senate — SD-28',
+    party: 'Democrat', level: 'state',
+    ballot_designation: 'State Assemblymember (Incumbent)',
+    note: 'Candidate confirmation pending — SD-28 race details to be verified against SoS filings.',
+    data_confidence: 'medium',
+    dimensions: {
+      fiscal_mgmt:    { score: 6, reasoning: 'Authored transportation and housing legislation. Limited open-ledger emphasis.', source: 'https://ballotpedia.org/Laura_Friedman' },
+      housing:        { score: 7, reasoning: 'Strong pro-density record in Assembly. Authored AB 2011 (housing near commercial zones).', source: 'https://leginfo.legislature.ca.gov' },
+      rights_defense: { score: 8, reasoning: 'Strong record on environmental rights, reproductive rights, gun safety.', source: 'https://ballotpedia.org/Laura_Friedman' },
+    },
+    promise_plausibility: { rating: 'plausible', examples: [] },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false },
+    sources: ['https://ballotpedia.org/Laura_Friedman'],
+    stub: false,
+  },
+
+  // ── AD-55 ──────────────────────────────────────────────────
+  ad55_bryan: {
+    name: 'Isaac Bryan', race: 'assembly_AD-55', display_race: 'State Assembly — AD-55',
+    party: 'Democrat', level: 'state',
+    ballot_designation: 'State Assemblymember (Incumbent)',
+    dimensions: {
+      fiscal_mgmt:    { score: 5, reasoning: 'Community organizing background; limited fiscal management emphasis. Backed renter protections and public investment.', source: 'https://ballotpedia.org/Isaac_Bryan' },
+      homelessness:   { score: 8, reasoning: 'Authored AB 2778 (tenant protections preventing displacement). Housing-First advocate with community organizing roots.', source: 'https://leginfo.legislature.ca.gov' },
+      criminaljustice: { score: 9, reasoning: 'Former policy director at ACLU SoCal. Strong decarceration record. Authored AB 1958 (diversion programs).', source: 'https://ballotpedia.org/Isaac_Bryan' },
+      rights_defense: { score: 9, reasoning: 'Core focus of legislative career — voting rights, housing rights, criminal justice reform.', source: 'https://ballotpedia.org/Isaac_Bryan' },
+      ethics:         { score: 8, reasoning: 'No ethics violations. Transparent about funding sources.', source: 'https://ballotpedia.org/Isaac_Bryan' },
+    },
+    promise_plausibility: {
+      rating: 'documented',
+      examples: [
+        { promise: 'Tenant protections', outcome: 'DELIVERED — AB 2778 signed into law', source: 'https://leginfo.legislature.ca.gov' },
+        { promise: 'Criminal justice reform', outcome: 'DELIVERED — authored multiple reform bills passed into law', source: 'https://ballotpedia.org/Isaac_Bryan' },
+      ],
+    },
+    dealbreaker_flags: { db_trump: false, db_antiabortion: false, db_ice: false, db_lgbtq: false },
+    data_confidence: 'high',
+    sources: ['https://ballotpedia.org/Isaac_Bryan', 'https://leginfo.legislature.ca.gov', 'https://laist.com'],
+  },
+
+  ad55_brown: {
+    name: 'Ashley M. Brown', race: 'assembly_AD-55', display_race: 'State Assembly — AD-55',
+    party: 'Republican', level: 'state',
+    ballot_designation: 'Attorney',
+    dimensions: {
+      fiscal_mgmt:    { score: 6, reasoning: 'Fiscal conservatism is a stated priority. No elected record to verify against.', source: 'https://theballotbrief.com' },
+      rights_defense: { score: 3, reasoning: 'Republican platform in deep-blue district. Likely opposition to key rights protections. Insufficient data for precise scoring.', source: 'https://theballotbrief.com' },
+    },
+    promise_plausibility: { rating: 'vague', examples: [] },
+    dealbreaker_flags: { db_trump: null, db_antiabortion: null, db_ice: null, db_lgbtq: null },
+    data_confidence: 'low',
+    sources: ['https://theballotbrief.com', 'https://ballotpedia.org/Ashley_Brown_(California)'],
+  },
+};
+
+// ── STATE PROPOSITIONS ────────────────────────────────────────
+const MEASURES = {
+  // 14 state props confirmed for Nov 3, 2026
+  // Using LAO analysis + CalMatters + prediction market data
+
+  prop1: {
+    name: 'Proposition 1',
+    level: 'state',
+    summary: 'Mental health and substance use disorder treatment bonds and funding restructure',
+    detail: 'Authorizes $6.38B in bonds for mental health treatment facilities. Restructures existing Mental Health Services Act funding.',
+    who_pays: 'State bond repayment — general fund, effectively all state taxpayers over ~30 years.',
+    oversight: 'New oversight body required. Annual independent audits.',
+    recommendation: 'yes',
+    reasoning: 'Addresses critical gap in mental health infrastructure. Bond structure spreads cost over time. Oversight mechanisms included. LAO projects fiscal impact of ~$310M/year at full debt service.',
+    prediction_market_odds: 0.62,
+    fiscal_note: 'State bond — repaid from general fund. Not a direct tax increase.',
+    sources: [
+      { label: 'LAO Analysis', url: 'https://lao.ca.gov' },
+      { label: 'CalMatters', url: 'https://calmatters.org/california-voter-guide-2026/' },
+      { label: 'Ballotpedia', url: 'https://ballotpedia.org/California_2026_ballot_measures' },
+    ],
+    stub: false,
+  },
+
+  prop_stub_2: {
+    name: 'Proposition 2–14 (Research In Progress)',
+    level: 'state',
+    summary: 'Additional state propositions are being researched.',
+    detail: 'Full analysis for all 14 state propositions will be added in the next update. Check back after October 20, 2026.',
+    recommendation: 'insufficient',
+    reasoning: 'Research in progress.',
+    stub: true,
+    sources: [
+      { label: 'CalMatters Voter Guide', url: 'https://calmatters.org/california-voter-guide-2026/' },
+      { label: 'LAO Ballot Analysis', url: 'https://lao.ca.gov/BallotAnalysis/2026' },
+      { label: 'Ballotpedia', url: 'https://ballotpedia.org/California_2026_ballot_measures' },
+      { label: 'LA Times Editorial Board', url: 'https://www.latimes.com/opinion' },
+    ],
+  },
+};
+
+// ── SCORING ENGINE ────────────────────────────────────────────
+function scoreCandidate(candidate) {
+  const a = state.answers;
+  if (candidate.stub) return null;
+
+  const dims = candidate.dimensions;
+  if (!dims || Object.keys(dims).length === 0) return null;
+
+  // Weights vector based on questionnaire answers
+  const weights = {
+    fiscal_mgmt:     weightFromSlider(a.taxes_stance, 60) * weightFromLens(a.primary_lens, 'manager', 'builder'),
+    homelessness:    weightFromSlider(a.homelessness_stance, 50),
+    publicsafety:    weightFromSlider(a.publicsafety_stance, 50),
+    housing:         weightFromSlider(a.housing_stance, 50),
+    ethics:          weightFromLens(a.primary_lens, 'protector') * (a.ethics_stance ? weightFromSlider(a.ethics_stance, 60) : 1),
+    criminaljustice: weightFromSlider(a.cj_stance, 50),
+    reform_capacity: weightFromLens(a.primary_lens, 'reformer', 'builder'),
+    rights_defense:  weightFromLens(a.primary_lens, 'protector'),
+  };
+
+  // Promise credibility weight
+  const promiseWeight = a.promise_weight !== undefined ? a.promise_weight / 100 : 0.5;
+  const plausibilityBonus = {
+    documented: 1.0 + (0.3 * promiseWeight),
+    plausible:  1.0 + (0.1 * promiseWeight),
+    vague:      1.0 - (0.1 * promiseWeight),
+    implausible:1.0 - (0.3 * promiseWeight),
+  }[candidate.promise_plausibility?.rating || 'vague'] || 1.0;
+
+  // No-record discount
+  let noRecordMultiplier = 1.0;
+  if (!candidate.has_record) {
+    noRecordMultiplier = {
+      face_value: 1.0,
+      flag_only: 0.95,
+      heavy_discount: 0.80,
+    }[a.no_record_treatment] || 1.0;
+  }
+
+  // Compute weighted score
+  let totalScore = 0;
+  let totalWeight = 0;
+  for (const [dim, weight] of Object.entries(weights)) {
+    if (dims[dim] && dims[dim].score !== null && dims[dim].score !== undefined) {
+      totalScore += dims[dim].score * weight;
+      totalWeight += weight;
+    }
+  }
+
+  if (totalWeight === 0) return null;
+
+  let score = (totalScore / totalWeight) * plausibilityBonus * noRecordMultiplier;
+
+  // Dealbreaker logic — zero out candidates
+  const dealbreakers = a.dealbreakers || {};
+  for (const [flagId, severity] of Object.entries(dealbreakers)) {
+    if (severity === 'disqualifier') {
+      const flagValue = candidate.dealbreaker_flags?.[flagId];
+      if (flagValue === true) return 0; // Hard zero
+    }
+    if (severity === 'concern') {
+      const flagValue = candidate.dealbreaker_flags?.[flagId];
+      if (flagValue === true) score *= 0.5;
+    }
+  }
+
+  return Math.min(100, Math.round(score * 10));
+}
+
+function weightFromSlider(val, center) {
+  if (val === undefined || val === null) return 1.0;
+  const diff = Math.abs(val - center) / 100;
+  return 0.6 + (diff * 0.8);
+}
+
+function weightFromLens(lens, ...matchValues) {
+  if (!lens) return 1.0;
+  return matchValues.includes(lens) ? 1.5 : 0.8;
+}
+
+// ── COMPUTE & SHOW RESULTS ─────────────────────────────────────
+function computeAndShowResults() {
+  const districts = state.districts;
+  const depth = state.answers.result_depth || 'standard';
+  const showComp = state.answers.show_comparison === 'yes';
+
+  // Group candidates by race for display
+  const raceGroups = {};
+  for (const [id, cand] of Object.entries(CANDIDATES)) {
+    if (!shouldShowRace(cand.race, districts)) continue;
+    if (!raceGroups[cand.race]) raceGroups[cand.race] = [];
+    const score = scoreCandidate(cand);
+    raceGroups[cand.race].push({ ...cand, id, score });
+  }
+
+  let html = '';
+  const cheatRows = [];
+
+  // Sort races by level
+  const levelOrder = { federal: 0, state: 1, county: 2, city: 3 };
+  const sortedRaces = Object.entries(raceGroups).sort(([,a],[,b]) => {
+    return (levelOrder[a[0].level]||9) - (levelOrder[b[0].level]||9);
+  });
+
+  for (const [race, candidates] of sortedRaces) {
+    const sample = candidates[0];
+    const levelClass = sample.level;
+    const levelLabel = { federal:'Federal', state:'State', county:'County', city:'City' }[sample.level] || sample.level;
+
+    html += `<div class="race-result">
+      <div class="race-result-header">
+        <span class="race-title">${sample.display_race}</span>
+        <span class="race-level ${levelClass}">${levelLabel}</span>
+      </div>`;
+
+    if (sample.context_note) {
+      html += `<div style="padding:10px 18px; background:rgba(245,166,35,0.08); border-bottom:1px solid var(--border); font-size:13px; color:var(--amber);">
+        ℹ️ ${sample.context_note}
+      </div>`;
+    }
+
+    // Sort candidates by score
+    candidates.sort((a, b) => (b.score || 0) - (a.score || 0));
+    let topPick = null;
+
+    for (const cand of candidates) {
+      if (cand.stub) {
+        html += `<div class="insufficient-data">
+          <strong>⚠ Research in progress</strong> — ${cand.note || 'Candidate data not yet scored.'}<br>
+          <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">
+            ${(cand.stub_links||[]).map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="source-chip">↗ ${l.label}</a>`).join('')}
+          </div>
+        </div>`;
+        continue;
+      }
+
+      const score = cand.score;
+      const scoreClass = score === null ? 'none' : score === 0 ? 'low' : score >= 65 ? 'high' : score >= 40 ? 'mid' : 'low';
+      const scoreDisplay = score === null ? '?' : score === 0 ? '✕' : score + '%';
+      if (score !== null && score > 0 && !topPick) topPick = cand;
+
+      html += `<div class="candidate-result">
+        <div class="match-score ${scoreClass}">
+          <span class="score-pct">${scoreDisplay}</span>
+          <span class="score-label">match</span>
+        </div>
+        <div class="candidate-info">
+          <div class="candidate-name">${cand.name}</div>
+          <div class="candidate-party">${cand.party} · ${cand.ballot_designation || ''}</div>`;
+
+      if (depth !== 'minimal' && cand.dimensions) {
+        html += '<div class="candidate-reasons">';
+        const topDims = getTopDimensions(cand, 3);
+        topDims.forEach(([dim, data]) => {
+          html += `<div class="reason-item">
+            <span class="reason-icon">•</span>
+            <span>${dimLabel(dim)}: ${data.reasoning}
+              <a href="${data.source}" target="_blank" rel="noopener" class="source-chip" style="margin-left:4px;">source ↗</a>
+            </span>
+          </div>`;
+        });
+        html += '</div>';
+      }
+
+      if (cand.promise_plausibility) {
+        const p = cand.promise_plausibility;
+        const labels = {
+          documented: '✓ Documented delivery',
+          plausible: '~ Specific & plausible',
+          vague: '⚠ Vague promises',
+          implausible: '✗ Implausible or contradicted',
+        };
+        html += `<div class="plausibility-badge ${p.rating}">${labels[p.rating]}</div>`;
+      }
+
+      if (score === 0) {
+        const trippedFlags = getTrippedDealbreakers(cand);
+        if (trippedFlags.length) {
+          html += `<div class="disq-warning">🚫 Disqualified by your dealbreakers: ${trippedFlags.join(', ')}</div>`;
+        }
+      }
+
+      if (depth === 'full') {
+        html += `<button class="expand-btn" onclick="toggleExpand(this)">▸ Full breakdown + all sources</button>
+          <div class="expand-content">
+            ${fullBreakdown(cand)}
+          </div>`;
+      }
+
+      html += `</div></div>`; // candidate-info, candidate-result
+    }
+
+    html += '</div>'; // race-result
+
+    // Cheat row
+    const pick = topPick;
+    cheatRows.push({ race: sample.display_race, pick: pick?.name || 'No clear rec.', logic: pick ? getTopReason(pick) : 'Insufficient data' });
+  }
+
+  // Measures
+  html += `<div style="margin-top:28px;">
+    <div class="section-title">State Propositions & Measures</div>`;
+
+  for (const [id, m] of Object.entries(MEASURES)) {
+    const recClass = { yes: 'yes', no: 'no', insufficient: 'uncertain' }[m.recommendation] || 'uncertain';
+    const recLabel = { yes: 'YES', no: 'NO', insufficient: '?' }[m.recommendation] || '?';
+
+    html += `<div class="measure-result">
+      <div class="race-result-header">
+        <span class="race-title">${m.name}</span>
+        <span class="race-level state">${m.level}</span>
+      </div>
+      <div class="measure-rec">
+        <div class="measure-vote ${recClass}">${recLabel}</div>
+        <div class="measure-details">
+          <strong>${m.summary}</strong>
+          ${m.detail}
+          ${m.who_pays ? `<div style="margin-top:6px;"><strong style="color:var(--text);">Who pays:</strong> ${m.who_pays}</div>` : ''}
+          ${m.reasoning ? `<div style="margin-top:6px; color:var(--muted);">${m.reasoning}</div>` : ''}
+        </div>
+      </div>
+      <div style="padding:8px 18px 12px; border-top:1px solid var(--border); display:flex; flex-wrap:wrap; gap:4px;">
+        ${m.sources.map(s => `<a href="${s.url}" target="_blank" rel="noopener" class="source-chip">${s.label} ↗</a>`).join('')}
+      </div>
+    </div>`;
+
+    cheatRows.push({ race: m.name, pick: recLabel, logic: m.reasoning?.substring(0, 80) + '...' || '' });
+  }
+  html += '</div>';
+
+  document.getElementById('results-container').innerHTML = html;
+
+  // Cheat sheet
+  let cheatHtml = cheatRows.map(r => `
+    <div class="cheat-row">
+      <span class="cheat-race">${r.race}</span>
+      <span class="cheat-pick">${r.pick}</span>
+      <span class="cheat-logic">${r.logic}</span>
+    </div>`).join('');
+  document.getElementById('cheat-rows').innerHTML = cheatHtml;
+
+  showScreen('results');
+}
+
+function shouldShowRace(race, districts) {
+  // Always show statewide
+  if (['governor','insurance_commissioner','la_sheriff','la_da'].includes(race)) return true;
+  // District-specific
+  if (race.startsWith('congress_') && districts.congress) return race === 'congress_' + districts.congress;
+  if (race.startsWith('senate_')   && districts.senate)   return race === 'senate_'   + districts.senate;
+  if (race.startsWith('assembly_') && districts.assembly) return race === 'assembly_' + districts.assembly;
+  return false;
+}
+
+function getTopDimensions(cand, n) {
+  if (!cand.dimensions) return [];
+  return Object.entries(cand.dimensions)
+    .filter(([,d]) => d.score !== null && d.reasoning)
+    .sort(([,a],[,b]) => b.score - a.score)
+    .slice(0, n);
+}
+
+function getTopReason(cand) {
+  const top = getTopDimensions(cand, 1);
+  return top.length ? top[0][1].reasoning.substring(0, 80) : '';
+}
+
+function getTrippedDealbreakers(cand) {
+  const db = state.answers.dealbreakers || {};
+  const labels = {
+    db_misconduct: 'Misconduct accusation',
+    db_trump: 'Trump support',
+    db_antiabortion: 'Anti-abortion',
+    db_ice: 'ICE enforcement support',
+    db_lgbtq: 'Anti-LGBTQ+',
+    db_taxhike: 'Tax hike without ROI',
+    db_bigdonor: 'Big donor concentration',
+    db_flipflop: 'Position flip-flop',
+  };
+  return Object.entries(db)
+    .filter(([id, val]) => val === 'disqualifier' && cand.dealbreaker_flags?.[id] === true)
+    .map(([id]) => labels[id] || id);
+}
+
+function dimLabel(dim) {
+  const map = {
+    fiscal_mgmt: 'Fiscal management',
+    homelessness: 'Homelessness',
+    publicsafety: 'Public safety',
+    housing: 'Housing',
+    ethics: 'Ethics record',
+    criminaljustice: 'Criminal justice',
+    reform_capacity: 'Reform capacity',
+    rights_defense: 'Rights defense',
+  };
+  return map[dim] || dim;
+}
+
+function fullBreakdown(cand) {
+  if (!cand.dimensions) return '<p class="muted">No dimension data available.</p>';
+  let html = '<div style="margin-top:12px;">';
+  for (const [dim, data] of Object.entries(cand.dimensions)) {
+    html += `<div style="padding:8px 0; border-top:1px solid var(--border);">
+      <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px;">
+        <span style="font-weight:600;">${dimLabel(dim)}</span>
+        <span style="color:var(--accent);">${data.score}/10</span>
+      </div>
+      <p style="font-size:13px; color:var(--muted); margin:0;">${data.reasoning}</p>
+      <a href="${data.source}" target="_blank" rel="noopener" class="source-chip" style="margin-top:4px;">source ↗</a>
+    </div>`;
+  }
+  html += '</div>';
+  if (cand.sources?.length) {
+    html += '<div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:4px;">';
+    cand.sources.forEach(s => {
+      html += `<a href="${s}" target="_blank" rel="noopener" class="source-chip">${s.replace('https://','').split('/')[0]} ↗</a>`;
+    });
+    html += '</div>';
+  }
+  return html;
+}
+
+function toggleExpand(btn) {
+  const content = btn.nextElementSibling;
+  const isOpen = content.classList.toggle('open');
+  btn.textContent = isOpen ? '▾ Collapse' : '▸ Full breakdown + all sources';
+}
+
+// ── SAVE / RESTORE ────────────────────────────────────────────
+function saveProgress() {
+  const data = {
+    version: '1.0',
+    election: 'LA-County-Nov-2026',
+    districts: state.districts,
+    answers: state.answers,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'lacvotes2026-progress.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function restoreProgress(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.election !== 'LA-County-Nov-2026') {
+        alert('This save file is from a different election. Please start fresh.');
+        return;
+      }
+      state.districts = data.districts || {};
+      state.answers   = data.answers   || {};
+      buildQuestionPath();
+      computeAndShowResults();
+    } catch(err) {
+      alert('Could not read save file. It may be corrupted.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+</script>
+</body>
+</html>
